@@ -71,9 +71,13 @@ namespace Trees
             Right = TNode.Nil;
             Parent = TNode.Nil;
         }
-        protected Node()
+        protected Node(TNode temporary)
         {
             Value = default;
+
+            Left = temporary;
+            Right = temporary;
+            Parent = temporary;
         }
 
         private int maxDepth(Node<TNode> node)
@@ -153,7 +157,7 @@ namespace Trees
     {
         private static readonly BinNode nil = new();
         public static BinNode Nil => nil;
-        private BinNode() : base() { }
+        private BinNode() : base(new BinNode(default)) { }
         public BinNode(int value, BinNode? l = null, BinNode? r = null, BinNode? p = null) : base(value)
         {
             Left = l ?? Nil;
@@ -189,7 +193,7 @@ namespace Trees
         public bool IsRed { get { return Color == NodeColor.Red; } }
         public bool IsBlack { get { return Color == NodeColor.Black; } }
 
-        private RBNode() : base()
+        private RBNode() : base(new RBNode(default))
         {
             Color = NodeColor.Black;
         }
