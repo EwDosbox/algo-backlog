@@ -2,7 +2,6 @@
     "files.exclude": {
         "**/bin": true,
         "**/obj": true,
-        "**/.old": true
     },
     "search.exclude": {
         "**/bin": true,
