@@ -14,10 +14,38 @@ namespace Heaps
         /// </summary>
         public int Count => array.Count;
 
+        /// <summary>
+        /// Initializes an empty heap
+        /// </summary>
         public BaseHeap()
         {
             array = new();
             translate = new();
+        }
+        /// <summary>
+        /// Initializes and builds an heap in linear time
+        /// </summary>
+        /// <param name="values">Collection of items and priorities to make a heap out of</param>
+        public BaseHeap(IEnumerable<(T item, double priority)> values)
+        {
+            array = new();
+            translate = new();
+
+            foreach (var (item, priority) in values)
+            {
+                HeapItem<T> heapItem = new(item, priority);
+                array.Add(heapItem);
+            }
+
+            for (int i = (array.Count / 2) - 1; i >= 0; i--)
+            {
+                SiftDown(i);
+            }
+
+            for (int i = 0; i < array.Count; i++)
+            {
+                translate[array[i]] = i;
+            }
         }
         /// <summary>
         /// Peeks at the root
