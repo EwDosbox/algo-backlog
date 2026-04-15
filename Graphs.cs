@@ -1,3 +1,5 @@
+using Queue;
+
 namespace Graphs
 {
     public abstract class BaseGraph<T>
@@ -147,8 +149,8 @@ namespace Graphs
             ResetVisited();
             start.Distance = 0;
             List<Vertex<T>> shortestPath = new();
-            Queue<Vertex<T>> queue = new();
-            queue.Enqueue(start);
+            PriorityQueue<Vertex<T>> queue = new();
+            queue.Enqueue(start, 0);
             shortestPath.Add(start);
 
             while (queue.Count > 0)
@@ -166,7 +168,7 @@ namespace Graphs
                             continue;
 
                         neighbor.Distance = curr.Distance + edge.Weight;
-                        queue.Enqueue(neighbor);
+                        queue.Enqueue(neighbor, neighbor.Distance);
                         closestVertex = (closestVertex.Distance > neighbor.Distance) ? neighbor : closestVertex;
                     }
                     shortestPath.Add(closestVertex);
@@ -181,7 +183,7 @@ namespace Graphs
                             continue;
 
                         neighbor.Distance = curr.Distance + edge.Weight;
-                        queue.Enqueue(neighbor);
+                        queue.Enqueue(neighbor, neighbor.Distance);
                     }
                 }
             }
