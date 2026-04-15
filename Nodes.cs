@@ -1,5 +1,3 @@
-using System.Drawing;
-
 namespace Trees
 {
     #region Interface for Nil

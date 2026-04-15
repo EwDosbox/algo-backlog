@@ -9,6 +9,11 @@ namespace Heaps
         protected List<HeapItem<T>> array;
         protected Dictionary<HeapItem<T>, int> translate;
 
+        /// <summary>
+        /// Number of items in heap
+        /// </summary>
+        public int Count => array.Count;
+
         public BaseHeap()
         {
             array = new();
@@ -53,7 +58,7 @@ namespace Heaps
         /// </summary>
         /// <param name="item">Item to insert</param>
         /// <param name="priority">Priority that determines location in the heap</param>
-        public void Insert(T item, int priority)
+        public void Insert(T item, double priority)
         {
             HeapItem<T> toInsert = new(item, priority);
             array.Add(toInsert);
@@ -233,10 +238,10 @@ namespace Heaps
     }
     public class HeapItem<T>
     {
-        public int Priority;
+        public double Priority;
         public T Item;
 
-        public HeapItem(T item, int priority)
+        public HeapItem(T item, double priority)
         {
             this.Item = item;
             this.Priority = priority;
