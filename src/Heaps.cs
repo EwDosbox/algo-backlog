@@ -140,6 +140,9 @@ namespace Heaps
     public class MinHeap<T> : BaseHeap<T>
     {
         /// <inheritdoc />
+        public MinHeap(IEnumerable<(T item, double priority)> values) : base(values) { }
+        public MinHeap() : base() { }
+
         public override void IncreaseKey(HeapItem<T> item, int newPriority)
         {
             base.IncreaseKey(item, newPriority);
@@ -206,6 +209,8 @@ namespace Heaps
     public class MaxHeap<T> : BaseHeap<T>
     {
         /// <inheritdoc />
+        public MaxHeap(IEnumerable<(T item, double priority)> values) : base(values) { }
+        public MaxHeap() : base() { }
         public override void IncreaseKey(HeapItem<T> item, int newPriority)
         {
             base.IncreaseKey(item, newPriority);

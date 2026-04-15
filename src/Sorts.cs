@@ -1,23 +1,34 @@
-public class Sorts
+using Heaps;
+
+public static class Sorts
 {
-    public int[] QuickSort(int[] array)
+    public static IEnumerable<IComparable> QuickSort(IEnumerable<IComparable> values)
     {
-        return [1, 2, 3];
+        throw new NotImplementedException();
     }
-    public int[] InsertionSort(int[] array)
+    public static IEnumerable<IComparable> InsertionSort(IEnumerable<IComparable> values)
     {
-        return [1, 2, 3];
+        throw new NotImplementedException();
     }
-    public int[] HeapSort(int[] array)
+    public static IEnumerable<T> HeapSort<T>(IEnumerable<T> values) where T : IComparable<T>
     {
-        return [1, 2, 3];
+        throw new NotImplementedException();
+        /*
+        MinHeap<IComparable> minHeap = new MinHeap<IComparable>(values);
+        List<IComparable> res = new();
+
+        while (minHeap.Count > 0)
+            res.Add(minHeap.ExtractExtreme());
+
+        return res.AsEnumerable();
+        */
     }
-    public int[] MergeSort(int[] array)
+    public static IEnumerable<IComparable> MergeSort(IEnumerable<IComparable> values)
     {
-        return [1, 2, 3];
+        throw new NotImplementedException();
     }
-    public int[] CountingSort(int[] array)
+    public static IEnumerable<IComparable> CountingSort(IEnumerable<IComparable> values)
     {
-        return [1, 2, 3];
+        throw new NotImplementedException();
     }
 }
