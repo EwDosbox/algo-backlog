@@ -8,7 +8,7 @@ public class MinHeapTests
     public void Insert_ShouldMaintainMinProperty()
     {
         // Arrange
-        var heap = new MinHeap<string>();
+        var heap = new MinHeap<string, int>();
 
         // Act
         heap.Insert("Low Priority", 10);

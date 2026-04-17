@@ -1,9 +1,12 @@
 namespace Heaps
 {
+    #region BaseHeap
+
     /// <summary>
     /// Abstract definition of an array backed binary heap with priority
     /// </summary>
-    /// <typeparam name="T">Type of items stored in the heap</typeparam>
+    /// <typeparam name="TItem">Items strored in the heap</typeparam>
+    /// <typeparam name="TPriority">Used for ordering the heap, can be same as TItem</typeparam>
     public abstract class BaseHeap<TItem, TPriority>
     {
         protected List<HeapItem<TItem, TPriority>> array;
@@ -18,6 +21,7 @@ namespace Heaps
         /// <summary>
         /// Initializes an empty heap
         /// </summary>
+        /// <param name="comparer">Optional custom comparison logic; Defaults to Comparer.Default</param>
         public BaseHeap(IComparer<TPriority>? comparer = null)
         {
             array = new();
@@ -29,6 +33,7 @@ namespace Heaps
         /// Initializes and builds an heap in linear time
         /// </summary>
         /// <param name="values">Collection of items and priorities to make a heap out of</param>
+        /// <param name="comparer">Optional custom comparison logic; Defaults to Comparer.Default</param>
         public BaseHeap(IEnumerable<(TItem item, TPriority priority)> values, IComparer<TPriority>? comparer = null) : this(comparer)
         {
             foreach (var (item, priority) in values)
@@ -133,10 +138,14 @@ namespace Heaps
         }
     }
 
+    #endregion
+    #region MinHeap
+
     /// <summary>
     /// Minimal Binary heap with priority
     /// </summary>
-    /// <typeparam name="T">Item stored in the heap</typeparam>
+    /// <typeparam name="TItem">Items strored in the heap</typeparam>
+    /// <typeparam name="TPriority">Used for ordering the heap, can be same as TItem</typeparam>
     public class MinHeap<TItem, TPriority> : BaseHeap<TItem, TPriority>
     {
         /// <inheritdoc />
@@ -202,10 +211,14 @@ namespace Heaps
         }
     }
 
+    #endregion
+    #region MaxHeap
+
     /// <summary>
     /// Maximal Binary heap with priority
     /// </summary>
-    /// <typeparam name="T">Item stored in the heap</typeparam>
+    /// <typeparam name="TItem">Items strored in the heap</typeparam>
+    /// <typeparam name="TPriority">Used for ordering the heap</typeparam>
     public class MaxHeap<TItem, TPriority> : BaseHeap<TItem, TPriority>
     {
         /// <inheritdoc />
@@ -246,29 +259,38 @@ namespace Heaps
         }
         protected override void SiftDown(int index)
         {
-            int smallest;
+            int largest;
             do
             {
                 int? left = Left(index);
                 int? right = Right(index);
-                smallest = index;
+                largest = index;
 
-                if (left.HasValue && Comparer.Compare(array[left.Value].Priority, array[smallest].Priority) < 0)
-                    smallest = left.Value;
+                if (left.HasValue && Comparer.Compare(array[left.Value].Priority, array[largest].Priority) > 0)
+                    largest = left.Value;
 
-                if (right.HasValue && Comparer.Compare(array[right.Value].Priority, array[smallest].Priority) < 0)
-                    smallest = right.Value;
+                if (right.HasValue && Comparer.Compare(array[right.Value].Priority, array[largest].Priority) > 0)
+                    largest = right.Value;
 
-                if (smallest != index)
+                if (largest != index)
                 {
-                    Swap(index, smallest);
-                    index = smallest;
+                    Swap(index, largest);
+                    index = largest;
                 }
 
-            } while (smallest != index);
+            } while (largest != index);
         }
 
     }
+
+    #endregion
+    #region HeapItem
+
+    /// <summary>
+    /// Wrapper for objects on the heap
+    /// </summary>
+    /// <typeparam name="TItem"></typeparam>
+    /// <typeparam name="TPriority"></typeparam>
     public class HeapItem<TItem, TPriority>
     {
         public TPriority Priority;
@@ -280,4 +302,5 @@ namespace Heaps
             this.Priority = priority;
         }
     }
+    #endregion
 }
