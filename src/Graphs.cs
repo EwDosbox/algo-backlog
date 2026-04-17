@@ -125,70 +125,39 @@ namespace Graphs
             return components;
         }
         /// <summary>
-        /// Returns shortest path between two vertices in a graph using Dijikstra's algorithm
+        /// Sets shortest distance from start vertex to all nodes
+        /// Distance itself will be in node.Distance
         /// </summary>
         /// <param name="start">Start vertex. Has to be in Graph</param>
-        /// <param name="end">Final vertex; Has to be in graph</param>
-        /// <returns></returns>
-        public IEnumerable<Vertex<T>> ShortestPath(Vertex<T> start, Vertex<T> end)
+        public void Dijikstra(Vertex<T> start)
         {
-            bool foundEnd = false;
-            HashSet<Vertex<T>> component = new();
             Action<Vertex<T>> prepDjikstra = vertex =>
             {
-                if (vertex == end)
-                    foundEnd = true;
-                component.Add(vertex);
                 vertex.Distance = double.PositiveInfinity;
+                vertex.Visited = false;
             };
             DFS(prepDjikstra, start);
 
-            if (!foundEnd)
-                return new List<Vertex<T>>();
-
-            ResetVisited();
             start.Distance = 0;
-            List<Vertex<T>> shortestPath = new();
-            PriorityQueue<Vertex<T>> queue = new();
+
+            Queue.PriorityQueue<Vertex<T>, double> queue = new();
             queue.Enqueue(start, 0);
-            shortestPath.Add(start);
 
             while (queue.Count > 0)
             {
                 Vertex<T> curr = queue.Dequeue();
                 curr.Visited = true;
-
-                if (curr == shortestPath.Last())
+                foreach (Edge<T> edge in curr.Edges)
                 {
-                    Vertex<T> closestVertex = curr;
-                    foreach (Edge<T> edge in curr.Edges)
-                    {
-                        Vertex<T> neighbor = edge.OtherEnd(curr);
-                        if (neighbor.Visited)
-                            continue;
+                    Vertex<T> neighbor = edge.OtherEnd(curr);
+                    if (neighbor.Visited)
+                        continue;
 
-                        neighbor.Distance = curr.Distance + edge.Weight;
-                        queue.Enqueue(neighbor, neighbor.Distance);
-                        closestVertex = (closestVertex.Distance > neighbor.Distance) ? neighbor : closestVertex;
-                    }
-                    shortestPath.Add(closestVertex);
+                    neighbor.Distance = curr.Distance + edge.Weight;
+                    queue.Enqueue(neighbor, neighbor.Distance);
                 }
-                else
-                {
 
-                    foreach (Edge<T> edge in curr.Edges)
-                    {
-                        Vertex<T> neighbor = edge.OtherEnd(curr);
-                        if (neighbor.Visited)
-                            continue;
-
-                        neighbor.Distance = curr.Distance + edge.Weight;
-                        queue.Enqueue(neighbor, neighbor.Distance);
-                    }
-                }
             }
-
-            return shortestPath;
         }
         #endregion
         #region Private methods

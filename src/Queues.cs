@@ -2,9 +2,9 @@ using Heaps;
 
 namespace Queue
 {
-    public class PriorityQueue<T>
+    public class PriorityQueue<TItem, TPriority>
     {
-        protected MaxHeap<T> heap;
+        protected MaxHeap<TItem, TPriority> heap;
 
         public int Count => heap.Count;
 
@@ -13,15 +13,15 @@ namespace Queue
             this.heap = new();
         }
 
-        public void Enqueue(T item, double priority)
+        public void Enqueue(TItem item, TPriority priority)
         {
             heap.Insert(item, priority);
         }
-        public T Dequeue()
+        public TItem Dequeue()
         {
             return heap.ExtractExtreme();
         }
-        public T Peek()
+        public TItem Peek()
         {
             return heap.Extreme();
         }

@@ -59,7 +59,7 @@ public static class Program
     {
         InitializeCountries();
         BuildBorders();
-        ExportToHtml();
+        //ExportToHtml();
 
         PrintHeader("BFS");
         europe.BFS(Print, czechia);

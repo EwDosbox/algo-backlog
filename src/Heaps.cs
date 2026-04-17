@@ -4,10 +4,11 @@ namespace Heaps
     /// Abstract definition of an array backed binary heap with priority
     /// </summary>
     /// <typeparam name="T">Type of items stored in the heap</typeparam>
-    public abstract class BaseHeap<T>
+    public abstract class BaseHeap<TItem, TPriority>
     {
-        protected List<HeapItem<T>> array;
-        protected Dictionary<HeapItem<T>, int> translate;
+        protected List<HeapItem<TItem, TPriority>> array;
+        protected Dictionary<HeapItem<TItem, TPriority>, int> translate;
+        protected readonly IComparer<TPriority> Comparer;
 
         /// <summary>
         /// Number of items in heap
@@ -17,23 +18,22 @@ namespace Heaps
         /// <summary>
         /// Initializes an empty heap
         /// </summary>
-        public BaseHeap()
+        public BaseHeap(IComparer<TPriority>? comparer = null)
         {
             array = new();
             translate = new();
+
+            Comparer = comparer ?? Comparer<TPriority>.Default;
         }
         /// <summary>
         /// Initializes and builds an heap in linear time
         /// </summary>
         /// <param name="values">Collection of items and priorities to make a heap out of</param>
-        public BaseHeap(IEnumerable<(T item, double priority)> values)
+        public BaseHeap(IEnumerable<(TItem item, TPriority priority)> values, IComparer<TPriority>? comparer = null) : this(comparer)
         {
-            array = new();
-            translate = new();
-
             foreach (var (item, priority) in values)
             {
-                HeapItem<T> heapItem = new(item, priority);
+                HeapItem<TItem, TPriority> heapItem = new(item, priority);
                 array.Add(heapItem);
             }
 
@@ -52,7 +52,7 @@ namespace Heaps
         /// </summary>
         /// <returns>Root of the heap</returns>
         /// <exception cref="InvalidOperationException">If heap is empty</exception>
-        public T Extreme()
+        public TItem Extreme()
         {
             if (array.Count == 0)
                 throw new InvalidOperationException("Heap is empty");
@@ -64,12 +64,12 @@ namespace Heaps
         /// </summary>
         /// <returns>Old root</returns>
         /// <exception cref="InvalidOperationException">If heap is empty</exception>
-        public T ExtractExtreme()
+        public TItem ExtractExtreme()
         {
             if (array.Count == 0)
                 throw new InvalidOperationException("Heap is empty.");
 
-            HeapItem<T> extreme = array[0];
+            HeapItem<TItem, TPriority> extreme = array[0];
 
             Swap(0, array.Count - 1);
 
@@ -86,9 +86,9 @@ namespace Heaps
         /// </summary>
         /// <param name="item">Item to insert</param>
         /// <param name="priority">Priority that determines location in the heap</param>
-        public void Insert(T item, double priority)
+        public void Insert(TItem item, TPriority priority)
         {
-            HeapItem<T> toInsert = new(item, priority);
+            HeapItem<TItem, TPriority> toInsert = new(item, priority);
             array.Add(toInsert);
 
             translate[toInsert] = array.Count - 1;
@@ -100,7 +100,7 @@ namespace Heaps
         /// </summary>
         /// <param name="item">Item to change, has to be in the heap</param>
         /// <param name="newPriority">New priority, determines new location</param>
-        public virtual void IncreaseKey(HeapItem<T> item, int newPriority)
+        public virtual void IncreaseKey(HeapItem<TItem, TPriority> item, TPriority newPriority)
         {
             item.Priority = newPriority;
         }
@@ -109,14 +109,14 @@ namespace Heaps
         /// </summary>
         /// <param name="item">Item to change, has to be in the heap</param>
         /// <param name="newPriority">New priority, determines new location</param>
-        public virtual void DecreaseKey(HeapItem<T> item, int newPriority)
+        public virtual void DecreaseKey(HeapItem<TItem, TPriority> item, TPriority newPriority)
         {
             item.Priority = newPriority;
         }
 
-        protected abstract void SiftUp(HeapItem<T> item);
+        protected abstract void SiftUp(HeapItem<TItem, TPriority> item);
         protected abstract void SiftUp(int index);
-        protected abstract void SiftDown(HeapItem<T> item);
+        protected abstract void SiftDown(HeapItem<TItem, TPriority> item);
         protected abstract void SiftDown(int index);
         protected int? Parent(int i) => i == 0 ? null : (i - 1) / 2;
         protected int? Left(int i) => (2 * i + 1 < array.Count) ? 2 * i + 1 : null;
@@ -124,7 +124,7 @@ namespace Heaps
 
         protected void Swap(int i, int j)
         {
-            HeapItem<T> temp = array[i];
+            HeapItem<TItem, TPriority> temp = array[i];
             array[i] = array[j];
             array[j] = temp;
 
@@ -137,24 +137,24 @@ namespace Heaps
     /// Minimal Binary heap with priority
     /// </summary>
     /// <typeparam name="T">Item stored in the heap</typeparam>
-    public class MinHeap<T> : BaseHeap<T>
+    public class MinHeap<TItem, TPriority> : BaseHeap<TItem, TPriority>
     {
         /// <inheritdoc />
-        public MinHeap(IEnumerable<(T item, double priority)> values) : base(values) { }
-        public MinHeap() : base() { }
+        public MinHeap(IEnumerable<(TItem item, TPriority priority)> values, IComparer<TPriority>? comparer = null) : base(values, comparer) { }
+        public MinHeap(IComparer<TPriority>? comparer = null) : base(comparer) { }
 
-        public override void IncreaseKey(HeapItem<T> item, int newPriority)
+        public override void IncreaseKey(HeapItem<TItem, TPriority> item, TPriority newPriority)
         {
             base.IncreaseKey(item, newPriority);
             SiftDown(item);
         }
-        public override void DecreaseKey(HeapItem<T> item, int newPriority)
+        public override void DecreaseKey(HeapItem<TItem, TPriority> item, TPriority newPriority)
         {
             base.DecreaseKey(item, newPriority);
             SiftUp(item);
         }
 
-        protected override void SiftUp(HeapItem<T> item)
+        protected override void SiftUp(HeapItem<TItem, TPriority> item)
         {
             int idx = translate[item];
 
@@ -162,7 +162,7 @@ namespace Heaps
         }
         protected override void SiftUp(int index)
         {
-            while (index > 0 && array[index].Priority < array[(index - 1) / 2].Priority)
+            while (index > 0 && Comparer.Compare(array[index].Priority, array[(index - 1) / 2].Priority) < 0)
             {
                 int parentIdx = (index - 1) / 2;
                 Swap(index, parentIdx);
@@ -170,7 +170,7 @@ namespace Heaps
             }
         }
 
-        protected override void SiftDown(HeapItem<T> item)
+        protected override void SiftDown(HeapItem<TItem, TPriority> item)
         {
             int idx = translate[item];
 
@@ -186,10 +186,10 @@ namespace Heaps
                 int? right = Right(index);
                 smallest = index;
 
-                if (left.HasValue && array[left.Value].Priority < array[smallest].Priority)
+                if (left.HasValue && Comparer.Compare(array[left.Value].Priority, array[smallest].Priority) < 0)
                     smallest = left.Value;
 
-                if (right.HasValue && array[right.Value].Priority < array[smallest].Priority)
+                if (right.HasValue && Comparer.Compare(array[right.Value].Priority, array[smallest].Priority) < 0)
                     smallest = right.Value;
 
                 if (smallest != index)
@@ -206,23 +206,23 @@ namespace Heaps
     /// Maximal Binary heap with priority
     /// </summary>
     /// <typeparam name="T">Item stored in the heap</typeparam>
-    public class MaxHeap<T> : BaseHeap<T>
+    public class MaxHeap<TItem, TPriority> : BaseHeap<TItem, TPriority>
     {
         /// <inheritdoc />
-        public MaxHeap(IEnumerable<(T item, double priority)> values) : base(values) { }
-        public MaxHeap() : base() { }
-        public override void IncreaseKey(HeapItem<T> item, int newPriority)
+        public MaxHeap(IEnumerable<(TItem item, TPriority priority)> values, IComparer<TPriority>? comparer = null) : base(values, comparer) { }
+        public MaxHeap(IComparer<TPriority>? comparer = null) : base(comparer) { }
+        public override void IncreaseKey(HeapItem<TItem, TPriority> item, TPriority newPriority)
         {
             base.IncreaseKey(item, newPriority);
             SiftUp(item);
         }
-        public override void DecreaseKey(HeapItem<T> item, int newPriority)
+        public override void DecreaseKey(HeapItem<TItem, TPriority> item, TPriority newPriority)
         {
             base.DecreaseKey(item, newPriority);
             SiftDown(item);
         }
 
-        protected override void SiftUp(HeapItem<T> item)
+        protected override void SiftUp(HeapItem<TItem, TPriority> item)
         {
             int idx = translate[item];
 
@@ -230,7 +230,7 @@ namespace Heaps
         }
         protected override void SiftUp(int index)
         {
-            while (index > 0 && array[index].Priority > array[(index - 1) / 2].Priority)
+            while (index > 0 && Comparer.Compare(array[index].Priority, array[(index - 1) / 2].Priority) < 0)
             {
                 int parentIdx = (index - 1) / 2;
                 Swap(index, parentIdx);
@@ -238,7 +238,7 @@ namespace Heaps
             }
         }
 
-        protected override void SiftDown(HeapItem<T> item)
+        protected override void SiftDown(HeapItem<TItem, TPriority> item)
         {
             int idx = translate[item];
 
@@ -253,10 +253,10 @@ namespace Heaps
                 int? right = Right(index);
                 smallest = index;
 
-                if (left.HasValue && array[left.Value].Priority > array[smallest].Priority)
+                if (left.HasValue && Comparer.Compare(array[left.Value].Priority, array[smallest].Priority) < 0)
                     smallest = left.Value;
 
-                if (right.HasValue && array[right.Value].Priority > array[smallest].Priority)
+                if (right.HasValue && Comparer.Compare(array[right.Value].Priority, array[smallest].Priority) < 0)
                     smallest = right.Value;
 
                 if (smallest != index)
@@ -269,12 +269,12 @@ namespace Heaps
         }
 
     }
-    public class HeapItem<T>
+    public class HeapItem<TItem, TPriority>
     {
-        public double Priority;
-        public T Item;
+        public TPriority Priority;
+        public TItem Item;
 
-        public HeapItem(T item, double priority)
+        public HeapItem(TItem item, TPriority priority)
         {
             this.Item = item;
             this.Priority = priority;
