@@ -74,7 +74,7 @@ public static class Program
         PrettyConnect(italy, uk);
 
         PrintHeader("Components");
-        Console.WriteLine(europe.CountComponents());
+        Console.WriteLine(europe.NoOfComponents());
     }
 
     static void PrintHeader(string s)
