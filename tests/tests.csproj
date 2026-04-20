@@ -8,6 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include=".\..\src\algo-backlog.csproj" />
+    <ProjectReference Include=".\..\algo-backlog\algo-backlog.csproj" />
   </ItemGroup>
 </Project>
