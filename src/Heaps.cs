@@ -243,7 +243,7 @@ namespace Heaps
         }
         protected override void SiftUp(int index)
         {
-            while (index > 0 && Comparer.Compare(array[index].Priority, array[(index - 1) / 2].Priority) < 0)
+            while (index > 0 && Comparer.Compare(array[index].Priority, array[(index - 1) / 2].Priority) > 0)
             {
                 int parentIdx = (index - 1) / 2;
                 Swap(index, parentIdx);
