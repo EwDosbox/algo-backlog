@@ -6,7 +6,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{827E0CD3-B72
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tests", "tests\tests.csproj", "{9CF47860-2CEA-F379-09D8-9AEF27965D12}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "algo-backlog", "src\algo-backlog.csproj", "{3F152133-4F5B-2310-C482-C72754407F09}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "algo-backlog", "algo-backlog\algo-backlog.csproj", "{3F152133-4F5B-2310-C482-C72754407F09}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
