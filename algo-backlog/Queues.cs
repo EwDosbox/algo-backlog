@@ -26,4 +26,16 @@ namespace Queue
             return heap.Extreme();
         }
     }
+    public class Queue<T>
+    {
+        public int Count => throw new NotImplementedException();
+        public void Enqueue(T item)
+        {
+            throw new NotImplementedException();
+        }
+        public T Dequeue()
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

@@ -118,8 +118,8 @@ namespace Graphs
     /// <typeparam name="T">Item stored inside the Edge</typeparam>
     public class Edge<T>
     {
-        private Vertex<T> source;
-        private Vertex<T> target;
+        private Vertex<T> _source;
+        private Vertex<T> _target;
 
         /// <summary>
         /// Weight of the Edge
@@ -130,22 +130,22 @@ namespace Graphs
         /// <summary>
         /// Source of the Edge
         /// </summary>
-        public Vertex<T> Source => source;
+        public Vertex<T> Source => _source;
         /// <summary>
         /// End of the Edge
         /// </summary>
-        public Vertex<T> Target => target;
+        public Vertex<T> Target => _target;
 
         public Edge(Vertex<T> source, Vertex<T> target)
         {
-            this.source = source;
-            this.target = target;
+            this._source = source;
+            this._target = target;
             this.Weight = 1;
         }
         public Edge(Vertex<T> source, Vertex<T> target, int weight)
         {
-            this.source = source;
-            this.target = target;
+            this._source = source;
+            this._target = target;
             this.Weight = weight;
         }
 
@@ -156,10 +156,10 @@ namespace Graphs
         /// <returns>Other end of specified Edge from Vertex</returns>
         public Vertex<T> OtherEnd(Vertex<T> vertex)
         {
-            if (vertex == source)
-                return target;
+            if (vertex == _source)
+                return _target;
             else
-                return source;
+                return _source;
         }
     }
 }

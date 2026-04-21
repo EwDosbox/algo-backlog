@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using Queue;
 
 namespace Graphs
@@ -12,18 +13,31 @@ namespace Graphs
         /// <summary>
         /// Hash table for constant acces to all vertices
         /// </summary>
-        protected HashSet<Vertex<T>> vertices;
-        public IEnumerable<Vertex<T>> Vertices => vertices.AsEnumerable();
-        public IEnumerable<Edge<T>> Edges => vertices.SelectMany(v => v.Edges).Distinct();
+        protected HashSet<Vertex<T>> _vertices;
+        public IReadOnlyCollection<Vertex<T>> Vertices => _vertices;
+        public IReadOnlyCollection<Edge<T>> Edges
+        {
+            get
+            {
+                List<Edge<T>> edges = new();
+
+                foreach (Vertex<T> vertex in _vertices)
+                {
+                    edges.Concat(vertex.Source);
+                }
+
+                return edges;
+            }
+        }
         public int NoOfComponents() => GetComponents().Count();
 
-        public IEnumerable<IEnumerable<Vertex<T>>> GetComponents()
+        public IReadOnlyCollection<IReadOnlyCollection<Vertex<T>>> GetComponents()
         {
             List<List<Vertex<T>>> res = new();
 
             ResetVisited();
 
-            foreach (Vertex<T> vertex in vertices)
+            foreach (Vertex<T> vertex in _vertices)
             {
                 if (!vertex.Visited)
                 {
@@ -38,11 +52,11 @@ namespace Graphs
 
         public BaseGraph()
         {
-            vertices = new();
+            _vertices = new();
         }
         public BaseGraph(IEnumerable<Vertex<T>> vertices)
         {
-            this.vertices = new(vertices);
+            this._vertices = new(vertices);
         }
         #region Public Methods
         /// <summary>
@@ -54,7 +68,7 @@ namespace Graphs
         {
             Vertex<T> vertex = new(vertexValue);
 
-            vertices.Add(vertex);
+            _vertices.Add(vertex);
 
             return vertex;
         }
@@ -69,7 +83,7 @@ namespace Graphs
             foreach (Edge<T> e in vertex.Edges)
                 vertex.Unlink(e);
 
-            vertices.Add(vertex);
+            _vertices.Add(vertex);
 
             return vertex;
         }
@@ -98,7 +112,7 @@ namespace Graphs
         public void BFS(Action<Vertex<T>> action, Vertex<T> startVertex)
         {
             ResetVisited();
-            Queue<Vertex<T>> queue = new();
+            Queue.Queue<Vertex<T>> queue = new();
 
             startVertex.Visited = true;
             queue.Enqueue(startVertex);
@@ -130,7 +144,7 @@ namespace Graphs
         public bool BFS(Func<Vertex<T>, bool> predicate, Vertex<T> startVertex)
         {
             ResetVisited();
-            Queue<Vertex<T>> queue = new();
+            Queue.Queue<Vertex<T>> queue = new();
 
             startVertex.Visited = true;
             queue.Enqueue(startVertex);
@@ -259,7 +273,7 @@ namespace Graphs
         /// </summary>
         private void ResetVisited()
         {
-            foreach (Vertex<T> vertex in vertices)
+            foreach (Vertex<T> vertex in _vertices)
                 vertex.Visited = false;
         }
         #endregion
@@ -276,7 +290,7 @@ namespace Graphs
         /// <inheritdoc/>
         public override bool Link(Vertex<T> source, Vertex<T> target)
         {
-            if (!vertices.Contains(source) || !vertices.Contains(target))
+            if (!_vertices.Contains(source) || !_vertices.Contains(target))
                 return false;
 
             source.Link(target);
@@ -301,7 +315,7 @@ namespace Graphs
         /// <inheritdoc/>
         public override bool Link(Vertex<T> source, Vertex<T> target)
         {
-            if (!vertices.Contains(source) || !vertices.Contains(target))
+            if (!_vertices.Contains(source) || !_vertices.Contains(target))
                 return false;
 
             Edge<T> edge = new(source, target);
@@ -312,7 +326,7 @@ namespace Graphs
         }
         public bool Link(Vertex<T> source, Vertex<T> target, int weight)
         {
-            if (!vertices.Contains(source) || !vertices.Contains(target))
+            if (!_vertices.Contains(source) || !_vertices.Contains(target))
                 return false;
 
             Edge<T> edge = new(source, target, weight);
