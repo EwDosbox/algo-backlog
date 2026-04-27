@@ -1,11 +1,11 @@
 public static class General
 {
-    public static bool IsSorted(int[] array)
+    public static bool IsSorted<T>(IList<T> values) where T : IComparable
     {
         bool isSorted = true;
 
-        for (int i = 1; i < array.Length; i++)
-            if (array[i] < array[i - 1])
+        for (int i = 1; i < values.Count; i++)
+            if (values[i].CompareTo(values[i - 1]) > 0)
             {
                 isSorted = false;
                 break;
@@ -18,6 +18,7 @@ public static class General
     {
         (y, x) = (x, y);
     }
+
     public static void Swap<T>(IList<T> list, int i, int j)
     {
         T bucket = list[j];

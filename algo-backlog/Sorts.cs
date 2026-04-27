@@ -10,18 +10,17 @@ public static class Sorts
     {
         throw new NotImplementedException();
     }
-    public static IEnumerable<T> HeapSort<T>(IEnumerable<T> values) where T : IComparable<T>
+    public static IEnumerable<T> HeapSort<T>(IList<T> values) where T : IComparable
     {
-        throw new NotImplementedException();
-        /*
-        MinHeap<IComparable> minHeap = new MinHeap<IComparable>(values);
-        List<IComparable> res = new();
+        List<T> sorted = new(values.Count);
+        MinHeap<T, T> minHeap = new(values, values);
 
         while (minHeap.Count > 0)
-            res.Add(minHeap.ExtractExtreme());
+        {
+            sorted.Add(minHeap.ExtractExtreme());
+        }
 
-        return res.AsEnumerable();
-        */
+        return sorted;
     }
     public static IEnumerable<IComparable> MergeSort(IEnumerable<IComparable> values)
     {

@@ -139,7 +139,7 @@ namespace Graphs
         /// Generic Breadth-First Search that evaluates predicate on every Vertex  
         /// Searches until first Vertex that predicate is true for
         /// </summary>
-        /// <param name="predicate">Predicate to executeuntil first correct Vertex</param>
+        /// <param name="predicate">Predicate to execute until the first correct Vertex</param>
         /// <param name="startVertex">Start of the Search</param>
         public bool BFS(Func<Vertex<T>, bool> predicate, Vertex<T> startVertex)
         {

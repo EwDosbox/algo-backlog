@@ -31,13 +31,18 @@ namespace Heaps
         }
         /// <summary>
         /// Initializes and builds an heap in linear time
+        /// Items and priorities have to be the same size 
         /// </summary>
-        /// <param name="values">Collection of items and priorities to make a heap out of</param>
+        /// <param name="items">List of items to store in the heap</param>
+        /// <param name="priorities">List of items priorities</param>
         /// <param name="comparer">Optional custom comparison logic; Defaults to Comparer.Default</param>
-        public BaseHeap(IEnumerable<(TItem item, TPriority priority)> values, IComparer<TPriority>? comparer = null) : this(comparer)
+        public BaseHeap(IList<TItem> items, IList<TPriority> priorities, IComparer<TPriority>? comparer = null) : this(comparer)
         {
-            foreach (var (item, priority) in values)
+            for (int i = 0; i < items.Count; i++)
             {
+                TItem item = items[i];
+                TPriority priority = priorities[i];
+
                 HeapItem<TItem, TPriority> heapItem = new(item, priority);
                 array.Add(heapItem);
             }
@@ -149,7 +154,7 @@ namespace Heaps
     public class MinHeap<TItem, TPriority> : BaseHeap<TItem, TPriority>
     {
         /// <inheritdoc />
-        public MinHeap(IEnumerable<(TItem item, TPriority priority)> values, IComparer<TPriority>? comparer = null) : base(values, comparer) { }
+        public MinHeap(IList<TItem> items, IList<TPriority> priorities, IComparer<TPriority>? comparer = null) : base(items, priorities, comparer) { }
         public MinHeap(IComparer<TPriority>? comparer = null) : base(comparer) { }
 
         public override void IncreaseKey(HeapItem<TItem, TPriority> item, TPriority newPriority)
@@ -222,7 +227,7 @@ namespace Heaps
     public class MaxHeap<TItem, TPriority> : BaseHeap<TItem, TPriority>
     {
         /// <inheritdoc />
-        public MaxHeap(IEnumerable<(TItem item, TPriority priority)> values, IComparer<TPriority>? comparer = null) : base(values, comparer) { }
+        public MaxHeap(IList<TItem> items, IList<TPriority> priorities, IComparer<TPriority>? comparer = null) : base(items, priorities, comparer) { }
         public MaxHeap(IComparer<TPriority>? comparer = null) : base(comparer) { }
         public override void IncreaseKey(HeapItem<TItem, TPriority> item, TPriority newPriority)
         {
