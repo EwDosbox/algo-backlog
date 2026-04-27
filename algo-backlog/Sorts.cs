@@ -12,12 +12,16 @@ public static class Sorts
     }
     public static IEnumerable<T> HeapSort<T>(IList<T> values) where T : IComparable
     {
-        List<T> sorted = new(values.Count);
+
         MinHeap<T, T> minHeap = new(values, values);
+
+        T[] sorted = new T[values.Count];
+        int idx = 0;
 
         while (minHeap.Count > 0)
         {
-            sorted.Add(minHeap.ExtractExtreme());
+            sorted[idx] = minHeap.ExtractExtreme();
+            idx++;
         }
 
         return sorted;
