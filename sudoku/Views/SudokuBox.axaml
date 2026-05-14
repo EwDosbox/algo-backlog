@@ -1,0 +1,26 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Sudoku.Views"
+             x:Class="Sudoku.Views.SudokuBox">
+
+    <Border BorderBrush="White" BorderThickness="1">
+        <UniformGrid Rows="3"
+                     Columns="3"
+                     RowSpacing="3"
+                     ColumnSpacing="3">
+
+            <local:SudokuCell/>
+            <local:SudokuCell/>
+            <local:SudokuCell/>
+
+            <local:SudokuCell/>
+            <local:SudokuCell/>
+            <local:SudokuCell/>
+
+            <local:SudokuCell/>
+            <local:SudokuCell/>
+            <local:SudokuCell/>
+
+        </UniformGrid>
+    </Border>
+</UserControl>

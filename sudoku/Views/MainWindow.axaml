@@ -1,0 +1,39 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:local="clr-namespace:Sudoku.Views"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Sudoku.Views.MainWindow"
+        Title="Sudoku"
+        >
+    <DockPanel LastChildFill="True">
+        <!-- Keyboard at the bottom -->
+        <Border DockPanel.Dock="Bottom" Background="#333" Padding="10">
+            <UniformGrid Rows="1" Columns="10" HorizontalAlignment="Center">
+                <!-- Numbers 1-9 as buttons -->
+                <Button Content="1" Click="KeyboardButton_Click" Width="40" Height="40" Margin="2"/>
+                <Button Content="2" Click="KeyboardButton_Click" Width="40" Height="40" Margin="2"/>
+                <Button Content="3" Click="KeyboardButton_Click" Width="40" Height="40" Margin="2"/>
+                <Button Content="4" Click="KeyboardButton_Click" Width="40" Height="40" Margin="2"/>
+                <Button Content="5" Click="KeyboardButton_Click" Width="40" Height="40" Margin="2"/>
+                <Button Content="6" Click="KeyboardButton_Click" Width="40" Height="40" Margin="2"/>
+                <Button Content="7" Click="KeyboardButton_Click" Width="40" Height="40" Margin="2"/>
+                <Button Content="8" Click="KeyboardButton_Click" Width="40" Height="40" Margin="2"/>
+                <Button Content="9" Click="KeyboardButton_Click" Width="40" Height="40" Margin="2"/>
+                <Button Content="" Click="KeyboardButton_Click" Width="40" Height="40" Margin="2"/>
+            </UniformGrid>
+        </Border>
+
+        <!-- Main Board -->
+        <Viewbox Stretch="Uniform">
+            <Border BorderBrush="White" BorderThickness="2">
+                <UniformGrid Name="MainGrid" Rows="3" Columns="3" Width="450" Height="450">
+                    <local:SudokuBox/> <local:SudokuBox/> <local:SudokuBox/>
+                    <local:SudokuBox/> <local:SudokuBox/> <local:SudokuBox/>
+                    <local:SudokuBox/> <local:SudokuBox/> <local:SudokuBox/>
+                </UniformGrid>
+            </Border>
+        </Viewbox>
+    </DockPanel>
+</Window>

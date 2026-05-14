@@ -5,6 +5,12 @@ This namespace defines discrete mathemathics graphs in both its most used forms:
 ## Methods
 
 
+
+| Operation | Time Complexity | Space Complexity | Description |
+| --------- | --------------- | ---------------- | ----------- |
+| DFS | O(V + E) | O(n) where n is the longest path | Peeks at the root of the heap |
+| BFS | O(V + E) | O(n) where n is the number of edges ? | Takes the root and restores structure |
+
 ## Namespace hierarchy
 
 ### Graphs.cs

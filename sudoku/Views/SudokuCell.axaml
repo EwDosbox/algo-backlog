@@ -1,0 +1,34 @@
+<UserControl xmlns:local="clr-namespace:Sudoku.Views"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Sudoku.Views.SudokuCell">
+    <Panel>
+        <Border BorderBrush="White" BorderThickness="1">
+            <UniformGrid Rows="3"
+                         Columns="3"
+                         Opacity="0.5"
+                         RowSpacing="1"
+                         ColumnSpacing="1">
+
+                <local:SudokuCellHint HintValue="1"/>
+                <local:SudokuCellHint HintValue="2"/>
+                <local:SudokuCellHint HintValue="3"/>
+
+                <local:SudokuCellHint HintValue="4"/>
+                <local:SudokuCellHint HintValue="5"/>
+                <local:SudokuCellHint HintValue="6"/>
+
+                <local:SudokuCellHint HintValue="7"/>
+                <local:SudokuCellHint HintValue="8"/>
+                <local:SudokuCellHint HintValue="9"/>
+
+            </UniformGrid>
+        </Border>
+        <TextBlock
+        Name="CellValue"
+        Text=""
+        FontSize="30"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center"/>
+    </Panel>
+</UserControl>
